@@ -47,6 +47,7 @@ type outPair struct {
 }
 
 func Generate(ctx context.Context, e Env, dir, filename string, stderr io.Writer) (map[string]string, error) {
+	fmt.Printf("Generate filename: %v, dir: %v \n", filename, dir)
 	configPath := ""
 	if filename != "" {
 		configPath = filepath.Join(dir, filename)
