@@ -26,6 +26,7 @@ type tmplCtx struct {
 	Enums      []Enum
 	Structs    []Struct
 	GoQueries  []Query
+	AdminTablesGenerator []AdminTableGenerator
 	Settings   config.Config
 
 	// TODO: Race conditions
@@ -54,6 +55,7 @@ func Generate(r *compiler.Result, settings config.CombinedSettings) (map[string]
 }
 
 func generate(settings config.CombinedSettings, enums []Enum, structs []Struct, queries []Query) (map[string]string, error) {
+	_, _  = generateGoAdmin(settings, enums, structs, queries)
 	i := &importer{
 		Settings: settings,
 		Queries:  queries,
@@ -136,6 +138,11 @@ func generate(settings config.CombinedSettings, enums []Enum, structs []Struct, 
 		querierFileName = golang.OutputQuerierFileName
 	}
 
+	adminFileName := "ad.go"
+	if golang.OutputAdminFileName != "" {
+		adminFileName = golang.OutputAdminFileName
+	}
+
 	if err := execute(dbFileName, "dbFile"); err != nil {
 		return nil, err
 	}
@@ -147,6 +154,13 @@ func generate(settings config.CombinedSettings, enums []Enum, structs []Struct, 
 			return nil, err
 		}
 	}
+
+	if golang.EmitGoAdminModels {
+		if err := execute(querierFileName, "interfaceFile"); err != nil {
+			return nil, err
+		}
+	}
+
 
 	files := map[string]struct{}{}
 	for _, gq := range queries {

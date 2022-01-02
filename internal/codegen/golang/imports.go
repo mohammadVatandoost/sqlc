@@ -90,6 +90,11 @@ func (i *importer) Imports(filename string) [][]ImportSpec {
 		querierFileName = i.Settings.Go.OutputQuerierFileName
 	}
 
+	adminFileName := "admin.go"
+	if i.Settings.Go.OutputAdminFileName != "" {
+		adminFileName = i.Settings.Go.OutputAdminFileName
+	}
+
 	switch filename {
 	case dbFileName:
 		return mergeImports(i.dbImports())
@@ -97,6 +102,8 @@ func (i *importer) Imports(filename string) [][]ImportSpec {
 		return mergeImports(i.modelImports())
 	case querierFileName:
 		return mergeImports(i.interfaceImports())
+	case adminFileName:
+		return mergeImports(i.goAdminImports())
 	default:
 		return mergeImports(i.queryImports(filename))
 	}
@@ -121,6 +128,19 @@ func (i *importer) dbImports() fileImports {
 	}
 
 	sort.Slice(std, func(i, j int) bool { return std[i].Path < std[j].Path })
+	sort.Slice(pkg, func(i, j int) bool { return pkg[i].Path < pkg[j].Path })
+	return fileImports{Std: std, Dep: pkg}
+}
+
+func (i *importer) goAdminImports() fileImports {
+	 pkg := []ImportSpec{
+		{Path: "github.com/GoAdminGroup/go-admin/context"},
+		{Path: "github.com/GoAdminGroup/go-admin/modules/db"},
+		{Path: "github.com/GoAdminGroup/go-admin/plugins/admin/modules/table"},
+		{Path: "github.com/GoAdminGroup/go-admin/template/types/form"},
+	}
+	var std []ImportSpec
+
 	sort.Slice(pkg, func(i, j int) bool { return pkg[i].Path < pkg[j].Path })
 	return fileImports{Std: std, Dep: pkg}
 }

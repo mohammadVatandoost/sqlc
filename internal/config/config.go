@@ -120,6 +120,7 @@ type SQLGo struct {
 	EmitResultStructPointers  bool              `json:"emit_result_struct_pointers" yaml:"emit_result_struct_pointers"`
 	EmitParamsStructPointers  bool              `json:"emit_params_struct_pointers" yaml:"emit_params_struct_pointers"`
 	EmitMethodsWithDBArgument bool              `json:"emit_methods_with_db_argument,omitempty" yaml:"emit_methods_with_db_argument"`
+	EmitGoAdminModels		  bool              `json:"emit_go_admin_models,omitempty" yaml:"emit_go_admin_models"`
 	JSONTagsCaseStyle         string            `json:"json_tags_case_style,omitempty" yaml:"json_tags_case_style"`
 	Package                   string            `json:"package" yaml:"package"`
 	Out                       string            `json:"out" yaml:"out"`
@@ -130,6 +131,7 @@ type SQLGo struct {
 	OutputModelsFileName      string            `json:"output_models_file_name,omitempty" yaml:"output_models_file_name"`
 	OutputQuerierFileName     string            `json:"output_querier_file_name,omitempty" yaml:"output_querier_file_name"`
 	OutputFilesSuffix         string            `json:"output_files_suffix,omitempty" yaml:"output_files_suffix"`
+	OutputAdminFileName     string            `json:"output_admin_file_name,omitempty" yaml:"output_admin_file_name"`
 }
 
 type SQLKotlin struct {
