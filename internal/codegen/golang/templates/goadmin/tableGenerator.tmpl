@@ -1,3 +1,5 @@
+{{define "tableGenerator"}}
+
 package {{.Package}}
 
 import "github.com/GoAdminGroup/go-admin/plugins/admin/modules/table"
@@ -9,8 +11,10 @@ import "github.com/GoAdminGroup/go-admin/plugins/admin/modules/table"
 
 
 var Generators = map[string]table.Generator{
-    {{- range .AdminTablesGenerator}}
-		{{.TableName}}: {{.Method}},
+    {{- range .Structs}}
+		"{{.Table.Rel}}": Get{{.Name}}Table,
 	{{- end}}
 
 }
+
+{{end}}

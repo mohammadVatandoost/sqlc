@@ -139,8 +139,11 @@ func (i *importer) goAdminImports() fileImports {
 		{Path: "github.com/GoAdminGroup/go-admin/plugins/admin/modules/table"},
 		{Path: "github.com/GoAdminGroup/go-admin/template/types/form"},
 	}
-	var std []ImportSpec
+	std := []ImportSpec{
+		{Path: "context"},
+	}
 
+	sort.Slice(std, func(i, j int) bool { return std[i].Path < std[j].Path })
 	sort.Slice(pkg, func(i, j int) bool { return pkg[i].Path < pkg[j].Path })
 	return fileImports{Std: std, Dep: pkg}
 }

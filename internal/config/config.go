@@ -132,6 +132,7 @@ type SQLGo struct {
 	OutputQuerierFileName     string            `json:"output_querier_file_name,omitempty" yaml:"output_querier_file_name"`
 	OutputFilesSuffix         string            `json:"output_files_suffix,omitempty" yaml:"output_files_suffix"`
 	OutputAdminFileName     string            `json:"output_admin_file_name,omitempty" yaml:"output_admin_file_name"`
+	OutputAdminTablesFileName     string            `json:"output_admin_tables_file_name,omitempty" yaml:"output_admin_tables_file_name"`
 }
 
 type SQLKotlin struct {

@@ -1,0 +1,39 @@
+{{define "dataModel"}}
+
+package {{.Package}}
+
+import (
+	{{range imports .SourceName}}
+	{{range .}}{{.}}
+	{{end}}
+	{{end}}
+)
+
+{{- range .Structs}}
+func Get{{.Name}}Table(ctx *context.Context) ({{.Table.Rel}}Table table.Table) {
+    {{.Table.Rel}}Table = table.NewDefaultTable(table.DefaultConfig())
+
+	info := {{.Table.Rel}}Table.GetInfo()
+	{{- range .Fields}}
+	    {{if .IsSortable}}
+	        info.AddField({{.Name}}, {{.NameSnakeCase}}, db.{{.Type}}).FieldSortable()
+	    {{- else }}
+	        info.AddField({{.Name}}, {{.NameSnakeCase}}, db.{{.Type}})
+        {{- end}}
+	{{- end}}
+
+	info.SetTable({{.Table.Rel}}).SetTitle({{.Name}}s).SetDescription({{.Name}}s)
+
+	formList := {{.Table.Rel}}Table.GetForm()
+	{{- range .Fields}}
+    	    formList.AddField({{.Name}}, {{.NameSnakeCase}}, db.{{.Type}}, form.Text)
+    {{- end}}
+
+	formList.SetTable({{.Table.Rel}}).SetTitle({{.Name}}s).SetDescription({{.Name}}s)
+
+	return
+}
+{{- end}}
+
+{{end}}
+

@@ -55,7 +55,7 @@ func Generate(r *compiler.Result, settings config.CombinedSettings) (map[string]
 }
 
 func generate(settings config.CombinedSettings, enums []Enum, structs []Struct, queries []Query) (map[string]string, error) {
-	_, _  = generateGoAdmin(settings, enums, structs, queries)
+	//_, _  = generateGoAdmin(settings, enums, structs, queries)
 	i := &importer{
 		Settings: settings,
 		Queries:  queries,
@@ -81,6 +81,7 @@ func generate(settings config.CombinedSettings, enums []Enum, structs []Struct, 
 	)
 
 	golang := settings.Go
+	golang.EmitGoAdminModels = true
 	tctx := tmplCtx{
 		Settings:                  settings.Global,
 		EmitInterface:             golang.EmitInterface,
@@ -138,9 +139,14 @@ func generate(settings config.CombinedSettings, enums []Enum, structs []Struct, 
 		querierFileName = golang.OutputQuerierFileName
 	}
 
-	adminFileName := "ad.go"
+	adminFileName := "admin.go"
 	if golang.OutputAdminFileName != "" {
 		adminFileName = golang.OutputAdminFileName
+	}
+
+	adminTablesFileName := "admin_tables.go"
+	if golang.OutputAdminFileName != "" {
+		adminTablesFileName = golang.OutputAdminTablesFileName
 	}
 
 	if err := execute(dbFileName, "dbFile"); err != nil {
@@ -156,7 +162,10 @@ func generate(settings config.CombinedSettings, enums []Enum, structs []Struct, 
 	}
 
 	if golang.EmitGoAdminModels {
-		if err := execute(querierFileName, "interfaceFile"); err != nil {
+		if err := execute(adminFileName, "dataModel"); err != nil {
+			return nil, err
+		}
+		if err := execute(adminTablesFileName, "tableGenerator"); err != nil {
 			return nil, err
 		}
 	}
