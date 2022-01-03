@@ -55,7 +55,6 @@ func Generate(r *compiler.Result, settings config.CombinedSettings) (map[string]
 }
 
 func generate(settings config.CombinedSettings, enums []Enum, structs []Struct, queries []Query) (map[string]string, error) {
-	//_, _  = generateGoAdmin(settings, enums, structs, queries)
 	i := &importer{
 		Settings: settings,
 		Queries:  queries,

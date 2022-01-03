@@ -11,7 +11,10 @@ import (
 )
 
 func Test_Generate(t *testing.T)  {
-	dir := "/home/divar/Tutorial/sqlc/sqlc/examples/authors"
+	//dir := "/home/divar/Tutorial/sqlc/sqlc/examples/authors"
+	//dir := "/home/divar/Tutorial/sqlc/sqlc/examples/booktest"
+	//dir := "/home/divar/Tutorial/sqlc/sqlc/examples/jets"
+	dir := "/home/divar/Tutorial/sqlc/sqlc/examples/ondeck"
 	rootCmd := &cobra.Command{}
 	stderr := rootCmd.ErrOrStderr()
 	output, err := Generate(context.Background(), Env{}, dir, "", stderr)

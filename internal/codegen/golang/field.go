@@ -39,13 +39,15 @@ func (gf Field) IsSortable() bool {
 	return false
 }
 
-//func (gf Field) AdminType() bool {
-//	if strings.Contains(gf.Type, "int") ||
-//		strings.Contains(gf.Type, "float") {
-//		return true
-//	}
-//	return false
-//}
+func (gf Field) GoAdminType() string {
+	adminMapLock.Lock()
+	defer adminMapLock.Unlock()
+	adminType, ok := adminTypesMap[gf.Type]
+	if ok {
+		return adminType
+	}
+	return "Text"
+}
 
 func JSONTagName(name string, settings config.CombinedSettings) string {
 	style := settings.Go.JSONTagsCaseStyle

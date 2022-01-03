@@ -16,20 +16,20 @@ func Get{{.Name}}Table(ctx *context.Context) ({{.Table.Rel}}Table table.Table) {
 	info := {{.Table.Rel}}Table.GetInfo()
 	{{- range .Fields}}
 	    {{if .IsSortable}}
-	        info.AddField({{.Name}}, {{.NameSnakeCase}}, db.{{.Type}}).FieldSortable()
+	        info.AddField("{{.Name}}", "{{.NameSnakeCase}}", db.{{.GoAdminType}}).FieldSortable()
 	    {{- else }}
-	        info.AddField({{.Name}}, {{.NameSnakeCase}}, db.{{.Type}})
+	        info.AddField("{{.Name}}", "{{.NameSnakeCase}}", db.{{.GoAdminType}})
         {{- end}}
 	{{- end}}
 
-	info.SetTable({{.Table.Rel}}).SetTitle({{.Name}}s).SetDescription({{.Name}}s)
+	info.SetTable("{{.Table.Rel}}").SetTitle("{{.Name}}s").SetDescription("{{.Name}}s")
 
 	formList := {{.Table.Rel}}Table.GetForm()
 	{{- range .Fields}}
-    	    formList.AddField({{.Name}}, {{.NameSnakeCase}}, db.{{.Type}}, form.Text)
+    	    formList.AddField("{{.Name}}", "{{.NameSnakeCase}}", db.{{.GoAdminType}}, form.Text)
     {{- end}}
 
-	formList.SetTable({{.Table.Rel}}).SetTitle({{.Name}}s).SetDescription({{.Name}}s)
+	formList.SetTable("{{.Table.Rel}}").SetTitle("{{.Name}}s").SetDescription("{{.Name}}s")
 
 	return
 }
