@@ -14,18 +14,18 @@ func GetAuthorTable(ctx *context.Context) (authorsTable table.Table) {
 
 	info := authorsTable.GetInfo()
 
-	info.AddField("ID", "id", db.int64).FieldSortable()
+	info.AddField("ID", "id", db.Int).FieldSortable()
 
-	info.AddField("Name", "name", db.string)
+	info.AddField("Name", "name", db.Text)
 
-	info.AddField("Bio", "bio", db.sql.NullString)
+	info.AddField("Bio", "bio", db.Text)
 
 	info.SetTable("authors").SetTitle("Authors").SetDescription("Authors")
 
 	formList := authorsTable.GetForm()
-	formList.AddField("ID", "id", db.int64, form.Text)
-	formList.AddField("Name", "name", db.string, form.Text)
-	formList.AddField("Bio", "bio", db.sql.NullString, form.Text)
+	formList.AddField("ID", "id", db.Int, form.Text)
+	formList.AddField("Name", "name", db.Text, form.Text)
+	formList.AddField("Bio", "bio", db.Text, form.Text)
 
 	formList.SetTable("authors").SetTitle("Authors").SetDescription("Authors")
 
