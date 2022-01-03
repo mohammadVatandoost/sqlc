@@ -133,7 +133,7 @@ func (i *importer) dbImports() fileImports {
 }
 
 func (i *importer) goAdminImports() fileImports {
-	 pkg := []ImportSpec{
+	pkg := []ImportSpec{
 		{Path: "github.com/GoAdminGroup/go-admin/context"},
 		{Path: "github.com/GoAdminGroup/go-admin/modules/db"},
 		{Path: "github.com/GoAdminGroup/go-admin/plugins/admin/modules/table"},

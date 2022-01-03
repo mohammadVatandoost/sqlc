@@ -20,14 +20,14 @@ type Generateable interface {
 }
 
 type tmplCtx struct {
-	Q          string
-	Package    string
-	SQLPackage SQLPackage
-	Enums      []Enum
-	Structs    []Struct
-	GoQueries  []Query
+	Q                    string
+	Package              string
+	SQLPackage           SQLPackage
+	Enums                []Enum
+	Structs              []Struct
+	GoQueries            []Query
 	AdminTablesGenerator []AdminTableGenerator
-	Settings   config.Config
+	Settings             config.Config
 
 	// TODO: Race conditions
 	SourceName string
@@ -168,7 +168,6 @@ func generate(settings config.CombinedSettings, enums []Enum, structs []Struct, 
 			return nil, err
 		}
 	}
-
 
 	files := map[string]struct{}{}
 	for _, gq := range queries {
