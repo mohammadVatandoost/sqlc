@@ -1,4 +1,3 @@
-//go:build examples
 // +build examples
 
 package authors
