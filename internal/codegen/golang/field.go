@@ -27,6 +27,28 @@ func (gf Field) Tag() string {
 	return strings.Join(tags, " ")
 }
 
+func (gf Field) NameSnakeCase() string {
+	return toSnakeCase(gf.Name)
+}
+
+func (gf Field) IsSortable() bool {
+	if strings.Contains(gf.Type, "int") ||
+		strings.Contains(gf.Type, "float") {
+		return true
+	}
+	return false
+}
+
+func (gf Field) GoAdminType() string {
+	adminMapLock.Lock()
+	defer adminMapLock.Unlock()
+	adminType, ok := adminTypesMap[gf.Type]
+	if ok {
+		return adminType
+	}
+	return "Text"
+}
+
 func JSONTagName(name string, settings config.CombinedSettings) string {
 	style := settings.Go.JSONTagsCaseStyle
 	if style == "" || style == "none" {

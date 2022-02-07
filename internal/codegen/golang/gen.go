@@ -20,13 +20,14 @@ type Generateable interface {
 }
 
 type tmplCtx struct {
-	Q          string
-	Package    string
-	SQLPackage SQLPackage
-	Enums      []Enum
-	Structs    []Struct
-	GoQueries  []Query
-	Settings   config.Config
+	Q                    string
+	Package              string
+	SQLPackage           SQLPackage
+	Enums                []Enum
+	Structs              []Struct
+	GoQueries            []Query
+	AdminTablesGenerator []AdminTableGenerator
+	Settings             config.Config
 
 	// TODO: Race conditions
 	SourceName string
@@ -79,6 +80,7 @@ func generate(settings config.CombinedSettings, enums []Enum, structs []Struct, 
 	)
 
 	golang := settings.Go
+	golang.EmitGoAdminModels = true
 	tctx := tmplCtx{
 		Settings:                  settings.Global,
 		EmitInterface:             golang.EmitInterface,
@@ -136,6 +138,16 @@ func generate(settings config.CombinedSettings, enums []Enum, structs []Struct, 
 		querierFileName = golang.OutputQuerierFileName
 	}
 
+	adminFileName := "admin.go"
+	if golang.OutputAdminFileName != "" {
+		adminFileName = golang.OutputAdminFileName
+	}
+
+	adminTablesFileName := "admin_tables.go"
+	if golang.OutputAdminFileName != "" {
+		adminTablesFileName = golang.OutputAdminTablesFileName
+	}
+
 	if err := execute(dbFileName, "dbFile"); err != nil {
 		return nil, err
 	}
@@ -144,6 +156,15 @@ func generate(settings config.CombinedSettings, enums []Enum, structs []Struct, 
 	}
 	if golang.EmitInterface {
 		if err := execute(querierFileName, "interfaceFile"); err != nil {
+			return nil, err
+		}
+	}
+
+	if golang.EmitGoAdminModels {
+		if err := execute(adminFileName, "dataModel"); err != nil {
+			return nil, err
+		}
+		if err := execute(adminTablesFileName, "tableGenerator"); err != nil {
 			return nil, err
 		}
 	}
